@@ -46,7 +46,8 @@ const TodoForm = () => {
       const ref = collection(db, "todos");
     const docRef = await addDoc(ref, {
       ...todo,
-      tarih: serverTimestamp(),
+      kullaniciEmail:currentUser.email,
+      tarih:serverTimestamp()
     });
     console.log(docRef.id);
     setTodo({baslik:'',aciklama:''})

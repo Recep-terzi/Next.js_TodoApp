@@ -1,14 +1,16 @@
 import { Typography } from "@mui/material";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import React, { useState, useEffect } from "react";
+import { collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
 import { db } from "../../firebase";
 import Todo from "../Todo/Todo";
 
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
+  const {currentUser} = useContext(AuthContext)
   useEffect(() => {
     const ref = collection(db, "todos");
-    const q = query(ref, orderBy("tarih", "desc"));
+    const q = query(ref, where("kullaniciEmail","==",currentUser?.email),orderBy("tarih", "desc"));
 
     const unsub = onSnapshot(q, (snap) => {
       setTodos(
